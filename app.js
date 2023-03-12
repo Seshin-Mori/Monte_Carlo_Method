@@ -2,6 +2,8 @@
 let sequence = [100, 200, 300];
 // 資金の初期値を設定する
 let fund = 400;
+document.getElementById("fund").textContent = fund;
+displaySequence();
 
 // 勝ったボタンをクリックしたときの処理
 document.getElementById("win-button").addEventListener("click", function () {
