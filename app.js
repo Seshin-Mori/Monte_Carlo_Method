@@ -55,6 +55,27 @@ document.getElementById("clear-button").addEventListener("click", function () {
   displaySequence();
 });
 
+//保存ボタンをクリックしたときの処理
+document.getElementById("save-button").addEventListener("click", function () {
+  //現在のsequenceの中身をlocalStorageに保存する
+  localStorage.setItem("sequence", JSON.stringify(sequence));
+  //現在のfundの中身をlocalStorageに保存する
+  localStorage.setItem("fund", JSON.stringify(fund));
+  //保存しましたと表示する
+  alert("保存しました");
+});
+
+//ロードボタンをクリックしたときの処理
+document.getElementById("load-button").addEventListener("click", function () {
+  //localStorageからsequenceの中身を取得する
+  sequence = JSON.parse(localStorage.getItem("sequence"));
+  //localStorageからfundの中身を取得する
+  fund = JSON.parse(localStorage.getItem("fund"));
+  //資金を表示する
+  document.getElementById("fund").textContent = fund;
+  //array要素に表示する
+  displaySequence();
+});
 //現在のsequenceの中身をarray要素に表示する
 function displaySequence() {
   const array = document.getElementById("array");
