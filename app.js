@@ -62,21 +62,24 @@ document
   });
 
 // 負けたボタンをクリックしたときの処理
-//betがNaNになったら、処理をしない
-if (isNaN(bet)) {
-} else {
-  document.getElementById("lose-button").addEventListener("click", function () {
-    //数列に左端と右端の数字を足したものを追加する
-    sequence.push(sequence[0] + sequence[sequence.length - 1]);
-    //追加後の数列の左端と右端の数字を賭け金とする
-    const bet = sequence[0] + sequence[sequence.length - 1];
-    //資金を更新する
-    fund = bet;
-    // 資金を表示する
-    document.getElementById("fund").textContent = fund;
-    displaySequence();
-  });
-}
+document.getElementById("lose-button").addEventListener("click", function () {
+  //数列に左端と右端の数字を足したものを追加する
+  sequence.push(sequence[0] + sequence[sequence.length - 1]);
+  //追加後の数列の左端と右端の数字を賭け金とする
+  const bet = sequence[0] + sequence[sequence.length - 1];
+  //資金を更新する
+  fund = bet;
+  // 資金を表示する
+  document.getElementById("fund").textContent = fund;
+  displaySequence();
+
+  //betがNaNになったら、終了と表示する
+  if (isNaN(bet)) {
+    document.getElementById("array").textContent = "終了";
+    array.textContent = "終了";
+    document.getElementById("fund").textContent = "終了";
+  }
+});
 
 // クリアボタンをクリックしたときの処理
 document.getElementById("clear-button").addEventListener("click", function () {
