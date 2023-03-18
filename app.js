@@ -150,7 +150,7 @@ document.getElementById("clear-button").addEventListener("click", function () {
   displaySequence();
 });
 
-//保存ボタンをクリックしたときの処理
+//ブラウザに保存ボタンをクリックしたときの処理
 document.getElementById("save-button").addEventListener("click", function () {
   //現在のsequenceの中身をlocalStorageに保存する
   localStorage.setItem("sequence", JSON.stringify(sequence));
@@ -160,7 +160,7 @@ document.getElementById("save-button").addEventListener("click", function () {
   alert("保存しました");
 });
 
-//ロードボタンをクリックしたときの処理
+//ブラウザからロードボタンをクリックしたときの処理
 document.getElementById("load-button").addEventListener("click", function () {
   //localStorageからsequenceの中身を取得する
   sequence = JSON.parse(localStorage.getItem("sequence"));
@@ -176,3 +176,45 @@ function displaySequence() {
   const array = document.getElementById("array");
   array.textContent = sequence;
 }
+
+//ファイルで保存ボタンをクリックしたときの処理
+document.getElementById("save-json").addEventListener("click", function () {
+  //現在のsequenceの中身をJSONファイルに保存する
+  const blob = new Blob([JSON.stringify(sequence)], { type: "text/json" });
+  const link = document.createElement("a");
+  link.href = URL.createObjectURL(blob);
+  link.download = "sequence.json";
+  link.click();
+  //保存しましたと表示する
+  alert("保存しました");
+});
+
+//ファイルからロードボタンをクリックしたときの処理
+document.getElementById("load-json").addEventListener("click", function () {
+  //Windowsのファイルエクスプローラーを開く
+  const input = document.createElement("input");
+  input.type = "file";
+  input.accept = ".json";
+
+  input.addEventListener("change", function () {
+    //選択されたファイルを取得する
+    const file = input.files[0];
+    const reader = new FileReader();
+    reader.readAsText(file);
+
+    reader.addEventListener("load", function () {
+      //JSONをパースする
+      const data = JSON.parse(reader.result);
+      //sequenceを更新する
+      sequence = data;
+      //資金を更新する
+      fund = sequence[0] + sequence[sequence.length - 1];
+      //資金を表示する
+      document.getElementById("fund").textContent = fund;
+      //array要素に表示する
+      displaySequence();
+    });
+  });
+
+  input.click();
+});
