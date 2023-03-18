@@ -1,220 +1,102 @@
-// 数列の初期値を設定する
+// 初期値設定
 let sequence = [100, 200, 300];
-// 資金の初期値を設定する
 let fund = 400;
 document.getElementById("fund").textContent = fund;
 displaySequence();
 
-// 2倍勝ったボタンをクリックしたときの処理
+// イベントリスナー追加
+["twice", "three", "four", "five"].forEach((value, index) => {
+  document
+    .getElementById(`${value}-win-button`)
+    .addEventListener("click", () => updateGame(index + 2));
+});
 document
-  .getElementById("twice-win-button")
-  .addEventListener("click", function () {
-    //数列の左端の数字と右端の数字を削除する
-    sequence.shift();
-    sequence.pop();
-    //削除後の数列の左端と右端の数字を賭け金とする
-    const bet = sequence[0] + sequence[sequence.length - 1];
-    //資金を更新する
-    fund = bet;
-    // 資金を表示する
-    document.getElementById("fund").textContent = fund;
-    displaySequence();
-    //要素が一件以下になったら、終了と表示する
-    if (sequence.length <= 1) {
-      document.getElementById("array").textContent = "終了";
-      array.textContent = "終了";
-    }
-    //掛け金情報がNaNになったら、終了と表示する
-    if (isNaN(bet)) {
-      document.getElementById("array").textContent = "終了";
-      array.textContent = "終了";
-      document.getElementById("fund").textContent = "終了";
-    }
-  });
-
-//3倍勝ったボタンをクリックしたときの処理
+  .getElementById("lose-button")
+  .addEventListener("click", () => updateGame(-1));
+document.getElementById("clear-button").addEventListener("click", clearGame);
+document.getElementById("save-button").addEventListener("click", saveGame);
+document.getElementById("load-button").addEventListener("click", loadGame);
+document.getElementById("save-json").addEventListener("click", saveGameToFile);
 document
-  .getElementById("three-win-button")
-  .addEventListener("click", function () {
-    //数列の左端二つの数字と右端二つの数字を削除する
-    sequence.shift();
-    sequence.shift();
-    sequence.pop();
-    sequence.pop();
-    //削除後の数列の左端と右端の数字を賭け金とする
-    const bet = sequence[0] + sequence[sequence.length - 1];
-    //資金を更新する
-    fund = bet;
-    // 資金を表示する
-    document.getElementById("fund").textContent = fund;
-    displaySequence();
-    //要素が一件以下になったら、終了と表示する
-    if (sequence.length <= 1) {
-      document.getElementById("array").textContent = "終了";
-      array.textContent = "終了";
-    }
-    //掛け金情報がNaNになったら、終了と表示する
-    if (isNaN(bet)) {
-      document.getElementById("array").textContent = "終了";
-      array.textContent = "終了";
-      document.getElementById("fund").textContent = "終了";
-    }
-  });
+  .getElementById("load-json")
+  .addEventListener("click", loadGameFromFile);
 
-//4倍勝ったボタンをクリックしたときの処理
-document
-  .getElementById("four-win-button")
-  .addEventListener("click", function () {
-    //数列の左端三つの数字と右端三つの数字を削除する
-    for (let i = 0; i < 3; i++) {
-      sequence.shift();
-      sequence.pop();
-    }
-    //削除後の数列の左端と右端の数字を賭け金とする
-    const bet = sequence[0] + sequence[sequence.length - 1];
-    //資金を更新する
-    fund = bet;
-    // 資金を表示する
-    document.getElementById("fund").textContent = fund;
-    displaySequence();
-    //要素が一件以下になったら、終了と表示する
-    if (sequence.length <= 1) {
-      document.getElementById("array").textContent = "終了";
-      array.textContent = "終了";
-    }
-    //掛け金情報がNaNになったら、終了と表示する
-    if (isNaN(bet)) {
-      document.getElementById("array").textContent = "終了";
-      array.textContent = "終了";
-      document.getElementById("fund").textContent = "終了";
-    }
-  });
+// ゲームの状態を更新
+function updateGame(removalCount) {
+  if (removalCount > 0) {
+    sequence.splice(0, removalCount);
+    sequence.splice(-removalCount);
+  } else {
+    sequence.push(sequence[0] + sequence[sequence.length - 1]);
+  }
 
-//5倍勝ったボタンをクリックしたときの処理
-document
-  .getElementById("five-win-button")
-  .addEventListener("click", function () {
-    //数列の左端四つの数字と右端四つの数字を削除する
-    for (let i = 0; i < 4; i++) {
-      sequence.shift();
-      sequence.pop();
-    }
-    //削除後の数列の左端と右端の数字を賭け金とする
-    const bet = sequence[0] + sequence[sequence.length - 1];
-    //資金を更新する
-    fund = bet;
-    // 資金を表示する
-    document.getElementById("fund").textContent = fund;
-    displaySequence();
-    //要素が一件以下になったら、終了と表示する
-    if (sequence.length <= 1) {
-      document.getElementById("array").textContent = "終了";
-      array.textContent = "終了";
-    }
-    //掛け金情報がNaNになったら、終了と表示する
-    if (isNaN(bet)) {
-      document.getElementById("array").textContent = "終了";
-      array.textContent = "終了";
-      document.getElementById("fund").textContent = "終了";
-    }
-  });
-
-// 負けたボタンをクリックしたときの処理
-document.getElementById("lose-button").addEventListener("click", function () {
-  //数列に左端と右端の数字を足したものを追加する
-  sequence.push(sequence[0] + sequence[sequence.length - 1]);
-  //追加後の数列の左端と右端の数字を賭け金とする
   const bet = sequence[0] + sequence[sequence.length - 1];
-  //資金を更新する
   fund = bet;
-  // 資金を表示する
   document.getElementById("fund").textContent = fund;
   displaySequence();
 
-  //betがNaNになったら、終了と表示する
-  if (isNaN(bet)) {
+  if (sequence.length <= 1 || isNaN(bet)) {
     document.getElementById("array").textContent = "終了";
-    array.textContent = "終了";
-    document.getElementById("fund").textContent = "終了";
   }
-});
+}
 
-// クリアボタンをクリックしたときの処理
-document.getElementById("clear-button").addEventListener("click", function () {
-  // 数列と資金を初期化する
+// ゲームの状態をクリア
+function clearGame() {
   sequence = [100, 200, 300];
   fund = 400;
-  // 資金を表示する
   document.getElementById("fund").textContent = fund;
-  //array要素に表示する
   displaySequence();
-});
+}
 
-//ブラウザに保存ボタンをクリックしたときの処理
-document.getElementById("save-button").addEventListener("click", function () {
-  //現在のsequenceの中身をlocalStorageに保存する
+// ゲームの状態を保存
+function saveGame() {
   localStorage.setItem("sequence", JSON.stringify(sequence));
-  //現在のfundの中身をlocalStorageに保存する
   localStorage.setItem("fund", JSON.stringify(fund));
-  //保存しましたと表示する
   alert("保存しました");
-});
+}
 
-//ブラウザからロードボタンをクリックしたときの処理
-document.getElementById("load-button").addEventListener("click", function () {
-  //localStorageからsequenceの中身を取得する
+// ゲームの状態を読み込み
+function loadGame() {
   sequence = JSON.parse(localStorage.getItem("sequence"));
-  //localStorageからfundの中身を取得する
   fund = JSON.parse(localStorage.getItem("fund"));
-  //資金を表示する
   document.getElementById("fund").textContent = fund;
-  //array要素に表示する
   displaySequence();
-});
-//現在のsequenceの中身をarray要素に表示する
+}
+
+// 現在のsequenceを表示
 function displaySequence() {
   const array = document.getElementById("array");
   array.textContent = sequence;
 }
 
-//ファイルで保存ボタンをクリックしたときの処理
-document.getElementById("save-json").addEventListener("click", function () {
-  //現在のsequenceの中身をJSONファイルに保存する
+// ゲームの状態をファイルに保存
+function saveGameToFile() {
   const blob = new Blob([JSON.stringify(sequence)], { type: "text/json" });
   const link = document.createElement("a");
   link.href = URL.createObjectURL(blob);
   link.download = "sequence.json";
   link.click();
-  //保存しましたと表示する
   alert("保存しました");
-});
+}
 
-//ファイルからロードボタンをクリックしたときの処理
-document.getElementById("load-json").addEventListener("click", function () {
-  //Windowsのファイルエクスプローラーを開く
+// ゲームの状態をファイルから読み込み
+function loadGameFromFile() {
   const input = document.createElement("input");
   input.type = "file";
   input.accept = ".json";
 
   input.addEventListener("change", function () {
-    //選択されたファイルを取得する
     const file = input.files[0];
     const reader = new FileReader();
     reader.readAsText(file);
 
     reader.addEventListener("load", function () {
-      //JSONをパースする
-      const data = JSON.parse(reader.result);
-      //sequenceを更新する
-      sequence = data;
-      //資金を更新する
+      sequence = JSON.parse(reader.result);
       fund = sequence[0] + sequence[sequence.length - 1];
-      //資金を表示する
       document.getElementById("fund").textContent = fund;
-      //array要素に表示する
       displaySequence();
     });
   });
 
   input.click();
-});
+}
