@@ -61,6 +61,64 @@ document
     }
   });
 
+//4倍勝ったボタンをクリックしたときの処理
+document
+  .getElementById("four-win-button")
+  .addEventListener("click", function () {
+    //数列の左端三つの数字と右端三つの数字を削除する
+    for (let i = 0; i < 3; i++) {
+      sequence.shift();
+      sequence.pop();
+    }
+    //削除後の数列の左端と右端の数字を賭け金とする
+    const bet = sequence[0] + sequence[sequence.length - 1];
+    //資金を更新する
+    fund = bet;
+    // 資金を表示する
+    document.getElementById("fund").textContent = fund;
+    displaySequence();
+    //要素が一件以下になったら、終了と表示する
+    if (sequence.length <= 1) {
+      document.getElementById("array").textContent = "終了";
+      array.textContent = "終了";
+    }
+    //掛け金情報がNaNになったら、終了と表示する
+    if (isNaN(bet)) {
+      document.getElementById("array").textContent = "終了";
+      array.textContent = "終了";
+      document.getElementById("fund").textContent = "終了";
+    }
+  });
+
+//5倍勝ったボタンをクリックしたときの処理
+document
+  .getElementById("five-win-button")
+  .addEventListener("click", function () {
+    //数列の左端四つの数字と右端四つの数字を削除する
+    for (let i = 0; i < 4; i++) {
+      sequence.shift();
+      sequence.pop();
+    }
+    //削除後の数列の左端と右端の数字を賭け金とする
+    const bet = sequence[0] + sequence[sequence.length - 1];
+    //資金を更新する
+    fund = bet;
+    // 資金を表示する
+    document.getElementById("fund").textContent = fund;
+    displaySequence();
+    //要素が一件以下になったら、終了と表示する
+    if (sequence.length <= 1) {
+      document.getElementById("array").textContent = "終了";
+      array.textContent = "終了";
+    }
+    //掛け金情報がNaNになったら、終了と表示する
+    if (isNaN(bet)) {
+      document.getElementById("array").textContent = "終了";
+      array.textContent = "終了";
+      document.getElementById("fund").textContent = "終了";
+    }
+  });
+
 // 負けたボタンをクリックしたときの処理
 document.getElementById("lose-button").addEventListener("click", function () {
   //数列に左端と右端の数字を足したものを追加する
