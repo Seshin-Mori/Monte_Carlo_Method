@@ -1,14 +1,14 @@
 // 初期値設定
 let sequence = [100, 200, 300];
 let fund = 400;
-document.getElementById("fund").textContent = fund;
+updateFundDisplay(); // Updated
 displaySequence();
 
 // イベントリスナー追加
 ["twice", "three", "four", "five"].forEach((value, index) => {
   document
     .getElementById(`${value}-win-button`)
-    .addEventListener("click", () => updateGame(index + 2));
+    .addEventListener("click", () => updateGame(index + 1));
 });
 document
   .getElementById("lose-button")
@@ -22,21 +22,19 @@ document
   .addEventListener("click", loadGameFromFile);
 
 // ゲームの状態を更新
-// ゲームの状態を更新
-// ゲームの状態を更新
 function updateGame(removalCount) {
-  if (removalCount > 0) {
-    sequence = sequence.slice(removalCount);
-  } else {
-    sequence.push(sequence[0] + sequence[sequence.length - 1]);
-  }
-
   const bet =
     sequence.length >= 2
       ? sequence[0] + sequence[sequence.length - 1]
       : sequence[0];
-  fund = bet;
-  document.getElementById("fund").textContent = fund || "終了";
+
+  if (removalCount > 0) {
+    sequence = sequence.slice(removalCount, sequence.length - removalCount);
+  } else {
+    sequence.push(bet);
+  }
+
+  updateFundDisplay(); // Updated
   displaySequence();
 
   if (sequence.length <= 1 || isNaN(bet)) {
@@ -47,8 +45,7 @@ function updateGame(removalCount) {
 // ゲームの状態をクリア
 function clearGame() {
   sequence = [100, 200, 300];
-  fund = 400;
-  document.getElementById("fund").textContent = fund;
+  updateFundDisplay(); // Updated
   displaySequence();
 }
 
@@ -63,7 +60,7 @@ function saveGame() {
 function loadGame() {
   sequence = JSON.parse(localStorage.getItem("sequence"));
   fund = JSON.parse(localStorage.getItem("fund"));
-  document.getElementById("fund").textContent = fund;
+  updateFundDisplay(); // Updated
   displaySequence();
 }
 
@@ -71,6 +68,15 @@ function loadGame() {
 function displaySequence() {
   const array = document.getElementById("array");
   array.textContent = sequence;
+}
+
+// Updated: fundの表示を更新する関数を追加
+function updateFundDisplay() {
+  fund =
+    sequence.length >= 2
+      ? sequence[0] + sequence[sequence.length - 1]
+      : sequence[0];
+  document.getElementById("fund").textContent = fund || "終了";
 }
 
 // ゲームの状態をファイルに保存
@@ -85,7 +91,7 @@ function saveGameToFile() {
 
 // ゲームの状態をファイルから読み込み
 function loadGameFromFile() {
-  const input = document.createElement("input");
+  const input = document.createElement("nput");
   input.type = "file";
   input.accept = ".json";
 
@@ -96,14 +102,9 @@ function loadGameFromFile() {
 
     reader.addEventListener("load", function () {
       sequence = JSON.parse(reader.result);
-      fund =
-        sequence.length >= 2
-          ? sequence[0] + sequence[sequence.length - 1]
-          : sequence[0];
-      document.getElementById("fund").textContent = fund;
+      updateFundDisplay(); // Updated
       displaySequence();
     });
   });
-
   input.click();
 }
