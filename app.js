@@ -22,17 +22,21 @@ document
   .addEventListener("click", loadGameFromFile);
 
 // ゲームの状態を更新
+// ゲームの状態を更新
+// ゲームの状態を更新
 function updateGame(removalCount) {
   if (removalCount > 0) {
-    sequence.splice(0, removalCount);
-    sequence.splice(-removalCount);
+    sequence = sequence.slice(removalCount);
   } else {
     sequence.push(sequence[0] + sequence[sequence.length - 1]);
   }
 
-  const bet = sequence[0] + sequence[sequence.length - 1];
+  const bet =
+    sequence.length >= 2
+      ? sequence[0] + sequence[sequence.length - 1]
+      : sequence[0];
   fund = bet;
-  document.getElementById("fund").textContent = fund;
+  document.getElementById("fund").textContent = fund || "終了";
   displaySequence();
 
   if (sequence.length <= 1 || isNaN(bet)) {
@@ -92,7 +96,10 @@ function loadGameFromFile() {
 
     reader.addEventListener("load", function () {
       sequence = JSON.parse(reader.result);
-      fund = sequence[0] + sequence[sequence.length - 1];
+      fund =
+        sequence.length >= 2
+          ? sequence[0] + sequence[sequence.length - 1]
+          : sequence[0];
       document.getElementById("fund").textContent = fund;
       displaySequence();
     });
