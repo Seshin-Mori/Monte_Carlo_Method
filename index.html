@@ -1,26 +1,28 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="UTF-8" />
-    <title>モンテカルロ法のメモツール</title>
-    <link rel="stylesheet" href="style.css" />
-  </head>
-  <body>
-    <h1>モンテカルロ法のメモツール</h1>
-    <p>※ファイル機能はWindowsのみ対応</p>
-    <p>掛け金情報：<span id="fund">400</span></p>
-    <button id="twice-win-button">2倍勝った</button>
-    <button id="three-win-button">3倍勝った</button>
-    <button id="four-win-button">4倍勝った</button>
-    <button id="five-win-button">5倍勝った</button>
-    <button id="lose-button">負けた</button>
-    <button id="clear-button">クリア</button>
-    <button id="save-button">ブラウザに保存</button>
-    <button id="load-button">ブラウザからロード</button>
-    <button id="save-json">ファイルで保存</button>
-    <button id="load-json">ファイルからロード</button>
-    <br />
-    <div id="array"></div>
-    <script src="app.js"></script>
-  </body>
+
+<head>
+  <meta charset="UTF-8" />
+  <title>モンテカルロ法のメモツール</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+  <h1>モンテカルロ法のメモツール</h1>
+  <p>掛け金情報：<span id="fund">400</span></p>
+  <p>今まで使った金額：<span id="total-spent">0</span></p>
+  <label for="multiplier">倍率選択:</label>
+  <input type="number" id="multiplier" min="1" max="99" value="2" />
+  <button id="confirm-button">確定</button>
+  <button id="lose-button">負けた</button>
+  <button id="clear-button">クリア</button>
+  <button id="save-button">ブラウザに保存</button>
+  <button id="load-button">ブラウザからロード</button>
+  <button id="save-json">ファイルで保存</button>
+  <button id="load-json">ファイルからロード</button>
+  <br />
+  <div id="array"></div>
+  <script src="app.js"></script>
+</body>
+
 </html>
