@@ -11,7 +11,7 @@ displaySequence();
 setButtonsEnabled(true);
 
 document.getElementById("confirm-button").addEventListener("click", () => {
-  const multiplier = parseInt(document.getElementById("multiplier").value);
+  const multiplier = parseFloat(document.getElementById("multiplier").value);
   if (multiplier >= 1 && multiplier <= 99) {
     updateGame(multiplier);
   } else {
@@ -36,7 +36,8 @@ function updateGame(multiplier) {
       : sequence[0];
 
   if (multiplier > 0) {
-    sequence = sequence.slice(multiplier, sequence.length - multiplier);
+    const removalCount = Math.floor(multiplier); // 小数点を切り捨て
+    sequence = sequence.slice(removalCount, sequence.length - removalCount);
     if (!firstAction) {
       totalSpent += bet; // 最初のアクションでない場合のみ掛け金を加算する
     }
@@ -62,15 +63,21 @@ function updateGame(multiplier) {
 
 function endGame() {
   const payoutStr = prompt("終了です。最後の配当金を入力してください:");
-  if (payoutStr === null || payoutStr.trim() === "" || isNaN(payoutStr)) {
+  if (
+    payoutStr === null ||
+    payoutStr.trim() === "" ||
+    isNaN(parseFloat(payoutStr))
+  ) {
     alert("キャンセルされました。最新の状態に戻ります。");
     displaySequence(); // 最新の数列を表示
     return;
   }
-  const payout = parseInt(payoutStr);
+  const payout = parseFloat(payoutStr);
   const profit = payout - totalSpent;
 
-  document.getElementById("array").textContent = `終了。利益: ${profit}円`;
+  document.getElementById("array").textContent = `終了。利益: ${profit.toFixed(
+    1
+  )}円`;
   setButtonsEnabled(false);
 }
 
@@ -131,10 +138,10 @@ function updateTotalWonDisplay() {
   if (!totalWonElement) {
     totalWonElement = document.createElement("p");
     totalWonElement.id = "total-won";
-    totalWonElement.textContent = `今までの獲得金額：${totalWon}`;
+    totalWonElement.textContent = `今までの獲得金額：${totalWon.toFixed(1)}`;
     document.body.appendChild(totalWonElement);
   } else {
-    totalWonElement.textContent = `今までの獲得金額：${totalWon}`;
+    totalWonElement.textContent = `今までの獲得金額：${totalWon.toFixed(1)}`;
   }
 }
 
